@@ -42,6 +42,7 @@ main(int argc, char **argv) {
     char *device;
     char *destination;
     char byte;
+    FILE *file;
 
     /*
      * Read the device path from input,
@@ -56,9 +57,11 @@ main(int argc, char **argv) {
 
     /* Get file name */
     if (argc == 3){
-	destination = argv[2];	
+	   destination = argv[2];	
     }
     printf("Revieved file %s\n", device);
+    
+    file = fopen(destination, 'w');
 
     /*
      * Need the following flags to open:
@@ -88,9 +91,17 @@ main(int argc, char **argv) {
     char in[255];
     char *delim = malloc(sizeof(char));
     *delim = ' ';
-    ssize_t readsize;
+    int value;
     while(1){
-        readsize = read(fd, in, sizeof(in));
+        /* Read in data from Arduino */
+        if(read(fd, in, sizeof(in)) != 0){
+        
+         /* Write the input string to the file */
+         fputs(in, file);
+         /* Create a comma separator for value */
+         fputs(", ", file);
+        }
+        
     }
 
     close(fd);
